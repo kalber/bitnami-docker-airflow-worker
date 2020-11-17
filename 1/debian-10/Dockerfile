@@ -4,18 +4,18 @@ LABEL maintainer "Bitnami <containers@bitnami.com>"
 ENV BITNAMI_PKG_CHMOD="-R g+rwX" \
     BITNAMI_PKG_EXTRA_DIRS="/opt/bitnami/airflow/dags" \
     HOME="/" \
-    PATH="/opt/bitnami/python/bin:/opt/bitnami/postgresql/bin:/opt/bitnami/common/bin:/opt/bitnami/airflow-worker/bin:/opt/bitnami/airflow/venv/bin:/opt/bitnami/nami/bin:$PATH"
+    PATH="/opt/bitnami/python/bin:/opt/bitnami/postgresql/bin:/opt/bitnami/common/bin:/opt/bitnami/airflow/venv/bin:/opt/bitnami/nami/bin:$PATH"
 
 COPY prebuildfs /
 # Install required system packages and dependencies
-RUN install_packages ca-certificates curl dirmngr gnupg libbsd0 libbz2-1.0 libc6 libcom-err2 libedit2 libffi6 libgcc1 libgmp10 libgnutls30 libgssapi-krb5-2 libhogweed4 libicu63 libidn2-0 libk5crypto3 libkeyutils1 libkrb5-3 libkrb5support0 libldap-2.4-2 liblzma5 libmariadb3 libncursesw6 libnettle6 libnss-wrapper libp11-kit0 libreadline7 libsasl2-2 libsqlite3-0 libssl1.1 libstdc++6 libtasn1-6 libtinfo6 libunistring2 libuuid1 libxml2 libxslt1.1 locales procps sudo unzip zlib1g
+RUN install_packages ca-certificates curl gzip libbsd0 libbz2-1.0 libc6 libcom-err2 libedit2 libffi6 libgcc1 libgmp10 libgnutls30 libgssapi-krb5-2 libhogweed4 libicu63 libidn2-0 libk5crypto3 libkeyutils1 libkrb5-3 libkrb5support0 libldap-2.4-2 liblzma5 libmariadb3 libncursesw6 libnettle6 libp11-kit0 libreadline7 libsasl2-2 libsqlite3-0 libssl1.1 libstdc++6 libtasn1-6 libtinfo6 libunistring2 libuuid1 libxml2 libxslt1.1 locales netbase procps sudo tar zlib1g
 RUN /build/bitnami-user.sh
 RUN /build/install-nami.sh
-RUN bitnami-pkg install python-3.6.10-3 --checksum 9211a0faa0fd4a39ddec622d28d5390b89b3eaef162c3822a3dfb636c14bf7b7
-RUN bitnami-pkg install postgresql-client-10.12.0-2 --checksum d410e1b0444e7ca41bc12ef379e435ac4c44263a51eac8f3d455115b5084fd00
-RUN bitnami-pkg install tini-0.19.0-0 --checksum 9a8ae20be31a518f042fcec359f2cf35bfdb4e2a56f2fa8ff9ef2ecaf45da80c
-RUN bitnami-pkg install gosu-1.12.0-0 --checksum 582d501eeb6b338a24f417fededbf14295903d6be55c52d66c52e616c81bcd8c
-RUN bitnami-pkg unpack airflow-worker-1.10.10-0 --checksum ed7c14e2cf7c9af6d5dc5584ebb3974a57375bee7316f2fb9a29fe6eb70ae19e
+RUN bitnami-pkg install python-3.6.12-7 --checksum 8258e3f5fa39fc824002219c11c1f2d701956409f1e826285b7b7908ea9cb2c6
+RUN bitnami-pkg install postgresql-client-10.15.0-0 --checksum a3b2c9f7bcc58ec78b2bbb4170cd0bb5b71a8fd8d879187aaff4a7f81326dcfc
+RUN bitnami-pkg install tini-0.19.0-1 --checksum 9b1f1c095944bac88a62c1b63f3bff1bb123aa7ccd371c908c0e5b41cec2528d
+RUN bitnami-pkg install gosu-1.12.0-2 --checksum 4d858ac600c38af8de454c27b7f65c0074ec3069880cb16d259a6e40a46bbc50
+RUN bitnami-pkg unpack airflow-worker-1.10.12-1 --checksum d79955fb4d86312ff46555390cb401fa16ebd250be2a1c59b8682254c4d2749c
 RUN apt-get update && apt-get upgrade -y && \
     rm -r /var/lib/apt/lists /var/cache/apt/archives
 RUN localedef -c -f UTF-8 -i en_US en_US.UTF-8
@@ -24,6 +24,7 @@ RUN update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX && \
 RUN echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && locale-gen
 
 COPY rootfs /
+RUN /opt/bitnami/scripts/locales/add-extra-locales.sh
 ENV AIRFLOW_DATABASE_HOST="postgresql" \
     AIRFLOW_DATABASE_NAME="bitnami_airflow" \
     AIRFLOW_DATABASE_PASSWORD="bitnami1" \
@@ -39,16 +40,19 @@ ENV AIRFLOW_DATABASE_HOST="postgresql" \
     AIRFLOW_WEBSERVER_PORT_NUMBER="8080" \
     AIRFLOW_WORKER_PORT_NUMBER="8793" \
     BITNAMI_APP_NAME="airflow-worker" \
-    BITNAMI_IMAGE_VERSION="1.10.10-debian-10-r22" \
+    BITNAMI_IMAGE_VERSION="1.10.12-debian-10-r69" \
     C_FORCE_ROOT="True" \
     LANG="en_US.UTF-8" \
     LANGUAGE="en_US:en" \
-    LD_LIBRARY_PATH="/opt/bitnami/python/lib/:/opt/bitnami/airflow/venv/lib/python3.6/site-packages/numpy/.libs/:$LD_LIBRARY_PATH" \
-    LD_PRELOAD="/usr/lib/libnss_wrapper.so" \
+    LD_LIBRARY_PATH="/opt/bitnami/python/lib/:/opt/bitnami/airflow/venv/lib/python3.6/site-packages/numpy.libs/:$LD_LIBRARY_PATH" \
+    LIBNSS_WRAPPER_PATH="/opt/bitnami/common/lib/libnss_wrapper.so" \
     LNAME="airflow" \
     NAMI_PREFIX="/.nami" \
     NSS_WRAPPER_GROUP="/opt/bitnami/airflow/nss_group" \
     NSS_WRAPPER_PASSWD="/opt/bitnami/airflow/nss_passwd" \
+    OS_ARCH="amd64" \
+    OS_FLAVOUR="debian-10" \
+    OS_NAME="linux" \
     REDIS_HOST="redis" \
     REDIS_PASSWORD="" \
     REDIS_PORT_NUMBER="6379" \

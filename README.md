@@ -4,7 +4,7 @@
 
 https://airflow.apache.org/
 
-# TL;DR;
+# TL;DR
 
 ## Docker Compose
 
@@ -13,13 +13,15 @@ $ curl -LO https://raw.githubusercontent.com/bitnami/bitnami-docker-airflow-work
 $ docker-compose up
 ```
 
+You can find the default credentials and available configuration options in the [Environment Variables](#environment-variables) section.
+
 # Why use Bitnami Images?
 
 * Bitnami closely tracks upstream source changes and promptly publishes new versions of this image using our automated systems.
 * With Bitnami images the latest bug fixes and features are available as soon as possible.
 * Bitnami containers, virtual machines and cloud images use the same components and configuration approach - making it easy to switch between formats based on your project needs.
-* All our images are based on [minideb](https://github.com/bitnami/minideb) a minimalist Debian based container image which gives you a small base container image and the familiarity of a leading linux distribution.
-* All Bitnami images available in Docker Hub are signed with [Docker Content Trust (DTC)](https://docs.docker.com/engine/security/trust/content_trust/). You can use `DOCKER_CONTENT_TRUST=1` to verify the integrity of the images.
+* All our images are based on [minideb](https://github.com/bitnami/minideb) a minimalist Debian based container image which gives you a small base container image and the familiarity of a leading Linux distribution.
+* All Bitnami images available in Docker Hub are signed with [Docker Content Trust (DCT)](https://docs.docker.com/engine/security/trust/content_trust/). You can use `DOCKER_CONTENT_TRUST=1` to verify the integrity of the images.
 * Bitnami container images are released daily with the latest distribution packages available.
 
 
@@ -31,7 +33,7 @@ $ docker-compose up
 Learn more about the Bitnami tagging policy and the difference between rolling tags and immutable tags [in our documentation page](https://docs.bitnami.com/tutorials/understand-rolling-tags-containers/).
 
 
-* [`1-debian-10`, `1.10.10-debian-10-r22`, `1`, `1.10.10`, `latest` (1/debian-10/Dockerfile)](https://github.com/bitnami/bitnami-docker-airflow-worker-scheduler/blob/1.10.10-debian-10-r22/1/debian-10/Dockerfile)
+* [`1`, `1-debian-10`, `1.10.12`, `1.10.12-debian-10-r69`, `latest` (1/debian-10/Dockerfile)](https://github.com/bitnami/bitnami-docker-airflow-worker-scheduler/blob/1.10.12-debian-10-r69/1/debian-10/Dockerfile)
 
 Subscribe to project updates by watching the [bitnami/airflow GitHub repo](https://github.com/bitnami/bitnami-docker-airflow-worker).
 
@@ -293,6 +295,10 @@ services:
   ```
 
 # Configuration
+
+## Installing additional python modules
+
+This container supports the installation of additional python modules at start-up time. In order to do that, you can mount a `requirements.txt` file with your specific needs under the path `/bitnami/python/requirements.txt`.
 
 ## Environment variables
 
